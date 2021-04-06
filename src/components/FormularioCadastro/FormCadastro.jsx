@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
 import {TextField, Button, Switch, FormControlLabel} from '@material-ui/core';
 
-function FormCadastro() {
+function FormCadastro({aoEnviar}) {
     const [nome, setNome] = useState("");
     const [sobrenome, setSobrenome] = useState("");
+    const [cpf, setCpf] = useState("");
+    const [promocoes, setPromocoes] = useState(true);
+    const [novidades, setNovidades] = useState(false);
 
     return(
         <form onSubmit={(event) => {
             event.preventDefault();
+            aoEnviar({nome, sobrenome, cpf, promocoes, novidades});
             }}>
 
             <TextField
@@ -35,6 +39,10 @@ function FormCadastro() {
 
 
             <TextField
+            value={cpf}
+            onChange={(event) => {
+                setCpf(event.target.value);
+            }}
             id="cpf"
             label="CPF"
             variant="outlined"
@@ -43,10 +51,24 @@ function FormCadastro() {
 
 
             <FormControlLabel label="Promoções" control=
-            {<Switch name="promocoes" Defaultchecked color="primary"/>}/>
+            {<Switch
+                checked={promocoes}
+                onChange={(event) =>{
+                setPromocoes(event.target.checked)
+            }} 
+            name="promocoes"
+            color="primary"/>}/>
+
 
             <FormControlLabel label="Novidades" control=
-            {<Switch name="novidades" Defaultchecked color="primary"/>}/>
+            {<Switch 
+                checked={novidades}
+                onChange={(event) =>{
+                setNovidades(event.target.checked)
+            }}
+            name="novidades"
+            color="primary"/>}/>
+
 
             <Button type="submit" variant="contained" color="primary">
                 Cadastrar
