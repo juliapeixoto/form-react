@@ -7,17 +7,30 @@ function DadosPessoais({aoEnviar, validacoes}) {
     const [cpf, setCpf] = useState("");
     const [promocoes, setPromocoes] = useState(true);
     const [novidades, setNovidades] = useState(false);
-    const [erros, setErros] = useState({cpf:{valido:true, texto:""}});
+    const [erros, setErros] = useState({cpf: {valido: true, texto:""}});
 
     function validarCampos(event) {
-        //8:07 funcoes de validacao
+        const {name, value} = event.target;
+        const novoEstado = {...erros}
+        novoEstado[name] = validacoes[name](value);
+        setErros(novoEstado);
+    }
+
+    function possoEnviar() {
+        for(let campo in erros){
+            if(!erros[campo].valido){
+                return false;
+            }
+        }
+        return true;
     }
 
     return(
-        <form onSubmit={
-            (event) => {
+        <form onSubmit={(event) => {
                 event.preventDefault();
-                aoEnviar({nome, sobrenome, cpf, promocoes, novidades});
+                if(possoEnviar()){
+                    aoEnviar({nome, sobrenome, cpf, promocoes, novidades});
+                }
             }}>
 
             <TextField
@@ -26,6 +39,7 @@ function DadosPessoais({aoEnviar, validacoes}) {
                 setNome(event.target.value);
             }}
             id="nome"
+            name="nome"
             label="Nome"
             variant="outlined"
             margin="normal"
@@ -38,6 +52,7 @@ function DadosPessoais({aoEnviar, validacoes}) {
                 setSobrenome(event.target.value);
             }}
             id="sobrenome"
+            name="sobrenome"
             label="Sobrenome"
             variant="outlined"
             margin="normal"
@@ -49,13 +64,11 @@ function DadosPessoais({aoEnviar, validacoes}) {
             onChange={(event) => {
                 setCpf(event.target.value);
             }}
-            onBlur={(event) => {
-                const ehValido = validarCPF(cpf);
-                setErros({cpf:ehValido})
-            }}
+            onBlur={validarCampos}
             error={!erros.cpf.valido}
             helperText={erros.cpf.texto}
             id="cpf"
+            name="cpf"
             label="CPF"
             variant="outlined"
             margin="normal"
@@ -83,7 +96,7 @@ function DadosPessoais({aoEnviar, validacoes}) {
 
 
             <Button type="submit" variant="contained" color="primary">
-                Cadastrar
+                Próximo
             </Button>
         </form>
     )
