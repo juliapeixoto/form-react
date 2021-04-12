@@ -1,31 +1,45 @@
-import { Typography } from '@material-ui/core';
-import React, {useState} from 'react';
+import { Step, StepLabel, Stepper, Typography } from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
 import DadosEntrega from './DadosEntrega';
 import DadosPessoais from './DadosPessoais';
 import DadosUsuario from './DadosUsuario';
 
-function FormCadastro({aoEnviar, validarCPF}) {
-    const [etapaAtual, setEtapaAtual] = useState(1);
+function FormCadastro({aoEnviar, validacoes}) {
+    const [etapaAtual, setEtapaAtual] = useState(0);
+    const [dadosColetados, setDados] = useState({});
 
-    function formAtual(etapa) {
-        switch(etapa){
-            case 0:
-                return <DadosUsuario/>;
-            
-            case 1:
-                return <DadosPessoais aoEnviar={aoEnviar} validarCPF={validarCPF}/>;
-    
-            case 2:
-                return <DadosEntrega/>;
-            
-            default: 
-                return <Typography>Erro ao selecionar formulário</Typography>;
+    useEffect(()=>{
+        if(etapaAtual == formularios.length - 1){
+            aoEnviar(dadosColetados);
         }
+    })
+
+    const formularios=[
+        <DadosUsuario aoEnviar={coletarDados} validacoes={validacoes}/>,
+        <DadosPessoais aoEnviar={coletarDados} validacoes={validacoes}/>,
+        <DadosEntrega aoEnviar={coletarDados} validacoes={validacoes}/>,
+        <Typography variant="h5">Obrigada pelo cadastro!</Typography>
+    ];
+
+    function coletarDados(dados) {
+        setDados({...dadosColetados, ...dados})
+        proximo();
+    }
+
+    function proximo() {
+        setEtapaAtual(etapaAtual + 1);
     }
 
     return(
         <>
-        {formAtual(etapaAtual)}
+        <Stepper activeStep={etapaAtual}>
+            <Step> <StepLabel>Login</StepLabel> </Step>
+            <Step> <StepLabel>Pessoal</StepLabel> </Step>
+            <Step> <StepLabel>Entrega</StepLabel> </Step>
+            <Step> <StepLabel>Finalização</StepLabel> </Step>
+        </Stepper>
+
+        {formularios[etapaAtual]}
         </>
     )
     

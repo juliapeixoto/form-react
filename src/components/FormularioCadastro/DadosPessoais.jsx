@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TextField, Button, Switch, FormControlLabel} from '@material-ui/core';
 
-function DadosPessoais({aoEnviar, validarCPF}) {
+function DadosPessoais({aoEnviar, validacoes}) {
     const [nome, setNome] = useState("");
     const [sobrenome, setSobrenome] = useState("");
     const [cpf, setCpf] = useState("");
@@ -9,10 +9,15 @@ function DadosPessoais({aoEnviar, validarCPF}) {
     const [novidades, setNovidades] = useState(false);
     const [erros, setErros] = useState({cpf:{valido:true, texto:""}});
 
+    function validarCampos(event) {
+        //8:07 funcoes de validacao
+    }
+
     return(
-        <form onSubmit={(event) => {
-            event.preventDefault();
-            aoEnviar({nome, sobrenome, cpf, promocoes, novidades});
+        <form onSubmit={
+            (event) => {
+                event.preventDefault();
+                aoEnviar({nome, sobrenome, cpf, promocoes, novidades});
             }}>
 
             <TextField
