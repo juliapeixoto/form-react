@@ -30,6 +30,7 @@ function DadosPessoais({aoEnviar}) {
             label="Nome"
             variant="outlined"
             margin="normal"
+            required
             fullWidth/>
 
 
@@ -43,6 +44,7 @@ function DadosPessoais({aoEnviar}) {
             label="Sobrenome"
             variant="outlined"
             margin="normal"
+            required
             fullWidth/>
 
 
@@ -59,6 +61,7 @@ function DadosPessoais({aoEnviar}) {
             label="CPF"
             variant="outlined"
             margin="normal"
+            required
             fullWidth/>
 
 
